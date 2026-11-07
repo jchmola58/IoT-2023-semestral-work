@@ -1,0 +1,34 @@
+# Data (never commit: size and licence)
+data/*
+!data/README.md
+*.parquet
+*.csv
+!tests/data/*.csv
+!examples/*.csv
+Merged*.csv
+
+# Models (large, can be recreated with `iot-detector train`)
+models/*
+!models/.gitkeep
+*.joblib
+*.pkl
+
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+secrets*
+credentials*
+
+# Python / tools
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.venv/
+venv/
+.ipynb_checkpoints/
+.DS_Store
