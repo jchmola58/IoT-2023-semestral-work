@@ -45,6 +45,10 @@ def _demo(a):
     res = det.predict(test[FEATURES])
     print(evaluate(test["y"], res["proba_malicious"].fillna(0.5)))
     print("(synthetic data: numbers say nothing about real traffic)")
+    if a.out:
+        Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+        det.save(a.out)
+        print(f"Saved demo model to {a.out}")
 
 
 def main(argv=None):
@@ -65,6 +69,7 @@ def main(argv=None):
     q.set_defaults(fn=_predict)
     d = sub.add_parser("demo", help="run on synthetic data")
     d.add_argument("--n", type=int, default=3000)
+    d.add_argument("--out", default=None, help="save the demo model here")
     d.set_defaults(fn=_demo)
     a = p.parse_args(argv)
     a.fn(a)

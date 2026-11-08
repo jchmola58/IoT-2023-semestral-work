@@ -25,7 +25,9 @@ p.add_argument("--n", type=int, default=10)
 a = p.parse_args()
 
 _, test = split_by_file(load_table(a.data))
-rows = test.sample(a.n, random_state=0)[FEATURES + ["y"]].reset_index(drop=True)
+rows = pd.concat([test[test["y"] == 0].sample(5, random_state=0),
+                  test[test["y"] == 1].sample(5, random_state=0)]
+                 )[FEATURES + ["y"]].reset_index(drop=True)
 rows["expected_proba_malicious"] = IoTDetector.load(a.model).predict_proba(rows[FEATURES])
 rows.to_csv(a.out, index=False, float_format="%.17g")
 print(f"Wrote {a.out}. Replace expected_proba_malicious with the Part II notebook "

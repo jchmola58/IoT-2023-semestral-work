@@ -28,42 +28,54 @@ Python 3.9 or newer.
 ```bash
 git clone https://github.com/jchmola58/IoT-2023-semestral-work.git
 cd IoT-2023-semestral-work
-python -m venv .venv && source .venv/bin/activate     # Windows: .venv\Scripts\activate
-pip install -e ".[dev]"                                # add ,data for parquet support
+python -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
 ```
 
-Or install the release `v0.1.0` straight from GitHub:
+Windows note: if `pytest` or `iot-detector` is "not recognized", use
+`python -m pytest` and `python -m iot_detector.cli` instead.
+
+The versions used for the results are in `requirements-lock.txt` and are
+saved inside every trained model.
+
+## Quick start (no data needed)
+
+This uses small **synthetic** data, so you can try everything in a minute.
 
 ```bash
-pip install "git+https://github.com/jchmola58/IoT-2023-semestral-work.git@v0.1.0"
+python -m pytest -v                                         # run the tests
+iot-detector demo --out models/demo.joblib                  # train a demo model
+iot-detector predict --model models/demo.joblib --input examples/sample_input.csv
 ```
 
-Versions used for the results are recorded in `requirements-lock.txt` and inside each saved model.
+The last command prints a table. In `examples/sample_input.csv`, one row has an
+out-of-range value (it is repaired, with a warning) and one row has an unseen
+`Protocol Type` (it is refused). The notebook `notebooks/demo.ipynb` shows the
+same steps.
 
-## Use
+## Use with the real data
 
-Try it without any data (synthetic, invented records):
-
-```bash
-iot-detector demo
-```
-
-With the real data (see [data/README.md](data/README.md) to download it):
+The CICIoT2023 data is not in the repo. See [data/README.md](data/README.md).
 
 ```bash
 iot-detector train --data data/ciciot_sample_5pct.parquet --out models/rf.joblib --evaluate
-iot-detector predict --model models/rf.joblib --input examples/sample_input.csv --out predictions.csv
+iot-detector predict --model models/rf.joblib --input your_records.csv --out predictions.csv
 ```
 
 In Python:
 
 ```python
-from iot_detector import IoTDetector, FEATURES
+from iot_detector import IoTDetector
 det = IoTDetector.load("models/rf.joblib")
-result = det.predict(df)          # df has the 39 FEATURES columns
+result = det.predict(df)       # df has the 39 FEATURES columns
 ```
 
-The notebook [notebooks/demo.ipynb](notebooks/demo.ipynb) shows the full flow on synthetic data.
+Optional: install only the package from the release (no tests, no examples):
+
+```bash
+pip install "git+https://github.com/jchmola58/IoT-2023-semestral-work.git@v0.1.0"
+```
 
 ## Bad inputs
 
