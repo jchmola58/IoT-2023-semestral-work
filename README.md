@@ -117,8 +117,8 @@ All code was written with AI help (Claude). I do not trust it because of that. I
 ## Results (Part II, from the report)
 
 Validation fold inside the training files (random forest): log loss 0.0164,
-BENIGN precision / recall / F1 = 0.841 / 0.847 / 0.844. Add the final held-out
-numbers from `iot-detector train --evaluate` here (`models/rf.metrics.json`).
+BENIGN precision / recall / F1 = 0.841 / 0.847 / 0.844.
+Real results: log loss: 0.0166, BENIGN precision / recall / F1 = 0.839 / 0.852 / 0.845.
 
 ## Limits and monitoring
 
